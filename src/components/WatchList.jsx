@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WatchListCart from "./WatchListCart";
+import genreids from "../Utility/genre";
 
 function WatchList({ watchList, handleRemoveFromWatchList, setWatchList }) {
   const [search, setSearch] = useState("");
+  const [genreList, setGenreList] = useState(["All Genres"]);
+  const [currGenre, setCurrGenre] = useState("All Genres");
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -36,18 +39,28 @@ function WatchList({ watchList, handleRemoveFromWatchList, setWatchList }) {
     setWatchList([...sortedDecreasing]);
   }
 
+  let handleFilter = (genre)=>{
+    setCurrGenre(genre)
+  }
+  useEffect(()=>{
+    let temp = watchList.map((movieObj)=>{
+      console.log(movieObj.genre_ids[0], genreids[movieObj.genre_ids[0]]);
+        return genreids[movieObj.genre_ids[0]]
+      })
+      temp = new Set(temp);
+      setGenreList(["All Genres", ...temp])
+      console.log("genreList: ", genreList);
+      console.log("watchList:",watchList);
+  }, [watchList])
+
   return (
     <>
       <div className="flex justify-center flex-wrap m-4">
-        <div className="flex justify-center items-center font-bold h-[3rem] w-[9rem] bg-blue-400 rounded-xl text-white mx-2 hover:cursor-pointer">
-          Action
-        </div>
-        <div className="flex justify-center items-center font-bold h-[3rem] w-[9rem] bg-gray-200 rounded-xl text-white mx-2 hover:cursor-pointer">
-          Action
-        </div>
-        <div className="flex justify-center items-center font-bold h-[3rem] w-[9rem] bg-blue-400 rounded-xl text-white mx-2 hover:cursor-pointer">
-          Action
-        </div>
+        { genreList.map((genre)=>{
+          return <div onClick={()=>handleFilter(genre)} className={currGenre==genre ? "flex justify-center items-center font-bold h-[3rem] w-[9rem] bg-blue-400 rounded-xl text-white mx-2 hover:cursor-pointer" : "flex justify-center items-center font-bold h-[3rem] w-[9rem] bg-gray-400 rounded-xl text-white mx-2 hover:cursor-pointer"}>
+            {genre}
+          </div>
+        })}
       </div>
 
       <div className="flex justify-center my-4">
@@ -100,6 +113,14 @@ function WatchList({ watchList, handleRemoveFromWatchList, setWatchList }) {
             {watchList.length > 0 ? (
               watchList
                 .filter((movie) => {
+                  if (currGenre == "All Genres") {
+                    return true;
+                  }
+                  else{
+                    return genreids[movie.genre_ids[0]]== currGenre
+                  }
+                })
+                .filter((movie) => {
                   return movie.title
                     .toLowerCase()
                     .includes(search.toLowerCase());
@@ -109,6 +130,7 @@ function WatchList({ watchList, handleRemoveFromWatchList, setWatchList }) {
                     <WatchListCart
                       watch={watch}
                       handleRemoveFromWatchList={handleRemoveFromWatchList}
+                      genreids={genreids}
                     />
                   );
                 })
