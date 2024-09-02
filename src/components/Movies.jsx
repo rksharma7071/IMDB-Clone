@@ -4,9 +4,9 @@ import axios from "axios";
 import Pagination from "./Pagination";
 
 function Movies({
-  handleAddToWatchList,
-  handleRemoveFromWatchList,
   watchList,
+  handleAddToWatchList,
+  handleRemoveFromWatchList
 }) {
   const [movies, setMovies] = useState([]);
   const [pageNo, setPageNo] = useState(1);
@@ -29,6 +29,9 @@ function Movies({
       .then(function (res) {
         setMovies(res.data.results);
         console.log(res.data.results);
+      })
+      .catch(function (error) {
+        console.error("Error fetching movies:", error);
       });
   }, [pageNo]);
 
