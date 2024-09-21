@@ -23,9 +23,7 @@ function Movies({
   };
   useEffect(() => {
     axios
-      .get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=ba1657dcacc154b48ea946d940785dc4&language=en-US&page=${pageNo}`
-      )
+      .get(`https://api.themoviedb.org/3/movie/popular?api_key=ba1657dcacc154b48ea946d940785dc4&language=en-US&page=${pageNo}`)
       .then(function (res) {
         setMovies(res.data.results);
         console.log(res.data.results);
@@ -33,6 +31,7 @@ function Movies({
       .catch(function (error) {
         console.error("Error fetching movies:", error);
       });
+    console.log(pageNo);
   }, [pageNo]);
 
   return (

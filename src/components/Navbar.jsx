@@ -8,6 +8,7 @@ function Navbar() {
       <img className='w-[80px]' src={Logo} alt=''/>
       <Link to="/" className='text-blue-500 text-xl font-bold'>Home</Link>
       <Link to="/watchlist" className='text-blue-500 text-xl font-bold'>Watchlist</Link>
+      <Link to="/contact" className='text-blue-500 text-xl font-bold'>Contact Us</Link>
     </div>
   )
 }

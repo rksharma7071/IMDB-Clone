@@ -6,6 +6,8 @@ import WatchList from "./components/WatchList";
 import Banner from "./components/Banner";
 import {createBrowserRouter, RouterProvider, Outlet} from "react-router-dom";
 import Error404 from "./components/Error404";
+import ContactUsForm from "./components/ContactUs";
+import ContactUs from "./components/ContactUs";
 
 
 const Layout = () => (
@@ -68,6 +70,12 @@ function App() {
               handleRemoveFromWatchList={handleRemoveFromWatchList}
               setWatchList={setWatchList}
             />
+          ),
+        },
+        {
+          path: "contact",
+          element: (
+            <ContactUs/>
           ),
         },
       ],
