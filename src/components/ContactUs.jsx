@@ -17,32 +17,28 @@ const ContactUs = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
+    const formData = new FormData(form);
 
-    // Create a FormData object from the form
-    const data = new FormData(form);
-
-    try {
-      const response = await fetch(form.action, {
-        method: "POST",
-        body: data,
-      });
-
-      if (response.ok) {
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString(),
+    })
+      .then(() => {
         setIsSubmitted(true);
         setError(false);
-        setFormData({ name: "", email: "", message: "" }); // Reset form
-      } else {
-        throw new Error("Something went wrong");
-      }
-    } catch (error) {
-      console.error("Error submitting the form: ", error);
-      setError(true);
-    }
+        navigate("/thank-you/");
+      })
+      .catch((error) => {
+        console.error("Error submitting the form: ", error);
+        setError(true);
+      });
   };
+
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
@@ -60,6 +56,7 @@ const ContactUs = () => {
         action="/success"
         method="POST"
         data-netlify="true"
+        name="contact"
         className="space-y-4"
       >
         <div>
